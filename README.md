@@ -1,6 +1,7 @@
-# Design and Implementation of Smart Traffic Light
-Controller with Emergency Vehicle Detection on
-FPGA
+##A Comprehensive Simulation Study of Multi-Sensor
+Integrated Smart Helmet System Using ARM7
+LPC2148
+
 
 
 ## Project Overview
