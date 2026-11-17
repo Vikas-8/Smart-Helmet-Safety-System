@@ -1,4 +1,7 @@
-# Multi-Sensor Integrated Smart Helmet Safety System Using ARM7 LPC2148
+# Design and Implementation of Smart Traffic Light
+Controller with Emergency Vehicle Detection on
+FPGA
+
 
 ## Project Overview
 
