@@ -1,6 +1,4 @@
-##A Comprehensive Simulation Study of Multi-Sensor
-Integrated Smart Helmet System Using ARM7
-LPC2148
+# A Comprehensive Simulation Study of Multi-Sensor Integrated Smart Helmet System Using ARM7 LPC2148
 
 
 
