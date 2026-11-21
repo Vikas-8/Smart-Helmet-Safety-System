@@ -2,7 +2,7 @@
 
 A simulation-based two-wheeler rider safety system on the ARM7 LPC2148, written in Embedded C (Keil uVision) and tested in Proteus.
 
-![Proteus schematic](images/proteus_schematic.png)
+![Proteus schematic](images/1795287469840_image.png)
 
 ## Features
 
