@@ -1,0 +1,28 @@
+# Keil uVision build output and per-user settings
+Objects/
+Listings/
+*.o
+*.axf
+*.lst
+*.map
+*.htm
+*.dep
+*.lnp
+*.crf
+*.d
+*.bak
+*.uvguix.*
+*.uvoptx
+*.uvgui.*
+
+# Proteus backups and per-user workspace files
+*.workspace
+*.pdsbak
+Backup Of *
+Last Loaded *
+*.SDF
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
