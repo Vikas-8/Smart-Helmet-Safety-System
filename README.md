@@ -1,83 +1,67 @@
-# A Comprehensive Simulation Study of Multi-Sensor Integrated Smart Helmet System Using ARM7 LPC2148
+# Smart Helmet / Smart Bike Safety System (ARM7 LPC2148)
 
+A simulation-based two-wheeler rider safety system on the ARM7 LPC2148, written in Embedded C (Keil uVision) and tested in Proteus.
 
+![Proteus schematic](images/proteus_schematic.png)
 
-## Project Overview
+## Features
 
-This project presents a simulation-based design of a multi-sensor integrated smart helmet safety system using the ARM7 LPC2148 microcontroller.
+- **RFID access control** over UART0. The system stays locked until a valid tag (`1`, `2` or `3`) is read.
+- **Alcohol detection.** Above the threshold, the system shows an alert and cancels access, so the rider must scan the RFID tag again.
+- **Gas leak alert** from the gas sensor.
+- **Accident detection** when tilt and vibration both cross their thresholds. Tilt alone shows `BIKE TILTED`, and vibration alone shows `HIGH VIBRATION`.
+- **Automatic rain canopy.** When rain is detected, a servo driven by PWM opens the canopy, and it closes again when the rain stops.
+- **Live readings** of rain, alcohol, gas and vibration on a 16x2 LCD, plus an LED that blinks on every alert.
 
-The system combines multiple sensors and communication modules to improve two-wheeler rider safety through helmet authentication, alcohol detection, accident detection, gas leakage monitoring, automatic rain protection and emergency notification.
+## How it works
 
-The proposed system is designed and evaluated using Proteus simulation and Embedded C programming.
+1. On power-up, the LCD shows `SMART BIKE SYS / SHOW RFID`.
+2. A valid RFID tag unlocks the system (`ACCESS GRANTED`), and an invalid tag shows `ACCESS DENIED`.
+3. Once unlocked, the main loop reads five analog sensors through the on-chip ADC, compares each one to its threshold, and updates the LCD, LED and servo.
 
-## Key Features
+## Pin connections
 
-- RFID-based helmet authentication.
-- Alcohol detection using MQ-3 sensor.
-- Gas leakage detection using MQ-2 sensor.
-- Accident detection using SW-420 vibration sensor and MPU6050.
-- Automatic rain protection using a rain sensor and SG90 servo motor.
-- GSM-based emergency notifications using SIM900A.
-- Real-time status monitoring through a 16×2 LCD.
+| Function | LPC2148 pin |
+|---|---|
+| RFID reader (UART0 RXD / TXD) | P0.1 / P0.0 |
+| Alert LED | P0.3 |
+| LCD data D0–D7 | P1.24 – P1.31 |
+| LCD RS / RW / EN | P1.16 / P1.17 / P1.18 |
+| Servo (PWM5) | P0.21 |
+| Alcohol sensor | AD0.0 (P0.27) |
+| Tilt sensor (potentiometer) | AD0.1 (P0.28) |
+| Gas sensor | AD0.2 (P0.29) |
+| Vibration sensor | AD0.3 (P0.30) |
+| Rain sensor | AD0.4 (P0.25) |
 
-## Hardware Components
+## Alert thresholds (10-bit ADC)
 
-- ARM7 LPC2148 microcontroller.
-- RFID reader and RFID tag.
-- MQ-3 alcohol sensor.
-- MQ-2 gas sensor.
-- SW-420 vibration sensor.
-- MPU6050 gyroscope and accelerometer.
-- Rain sensor.
-- SIM900A GSM module.
-- SG90 servo motor.
-- 16×2 LCD display.
+| Sensor | Threshold |
+|---|---|
+| Gas | 800 |
+| Rain | 700 |
+| Vibration | 600 |
+| Alcohol | 650 |
+| Tilt | 700 |
 
-## Working Principle
+## Repository layout
 
-### 1. Helmet Authentication
-The RFID system verifies helmet authentication before allowing the ignition process.
+```
+src/main.c                    firmware source (Embedded C, Keil uVision)
+hex/smart_bike_system.hex     compiled firmware to load into the MCU in Proteus
+proteus/                      Proteus project (.pdsprj)
+images/                       schematic and simulation screenshots
+```
 
-### 2. Alcohol Detection
-The MQ-3 sensor monitors alcohol levels and helps prevent ignition when the configured threshold is exceeded.
+## Running the simulation
 
-### 3. Gas Leakage Detection
-The MQ-2 sensor monitors gas levels and provides an alert when abnormal levels are detected.
+1. Open the Proteus project from `proteus/`.
+2. Double-click the microcontroller and set **Program File** to `hex/smart_bike_system.hex`.
+3. Run the simulation, send a tag ID (`1`, `2` or `3`) through the RFID virtual terminal, then vary the sensor potentiometers to trigger each alert.
 
-### 4. Accident Detection
-The system combines vibration detection from SW-420 and tilt information from MPU6050 to identify potential accidents.
+To rebuild the hex, create a Keil uVision project for the LPC2148, add `src/main.c`, enable **Create HEX File** under Options for Target → Output, and build.
 
-### 5. Automatic Rain Protection
-The rain sensor detects rainfall and activates the SG90 servo motor to deploy the protective canopy.
+## Notes and future work
 
-### 6. Emergency Notification
-The SIM900A GSM module is used to transmit emergency notifications when an accident condition is identified.
-
-## Software and Technologies
-
-- Embedded C
-- ARM7 LPC2148
-- Keil µVision
-- Proteus 8.9
-- RFID interfacing
-- Sensor interfacing
-- GSM communication through UART AT commands
-- PWM-based servo control
-
-## Simulation and Evaluation
-
-The system is evaluated through Proteus simulation, covering sensor integration, authentication, accident detection, rain response and emergency notification.
-
-The project investigates the integration of multiple embedded components into a unified two-wheeler safety platform.
-
-## Future Scope
-
-- Physical hardware implementation.
-- GPS-based accident location tracking.
-- Mobile application integration.
-- Improved sensor calibration.
-- Real-world testing and performance evaluation.
-
-## Conclusion
-
-This project demonstrates a multi-sensor embedded safety system for two-wheelers using ARM7 LPC2148. By integrating authentication, environmental monitoring, accident detection and GSM communication, the proposed design explores a comprehensive approach to rider safety.
+- Sensors are modelled as analog inputs in the simulation, and tilt is simulated with a potentiometer.
+- The schematic includes a SIM900D GSM module, but the firmware does not use it yet. Sending an SMS alert on accident detection over UART1 is planned as future work.
